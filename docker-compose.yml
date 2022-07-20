@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  nginx:
+    depends_on:
+      - backend
+      - client
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '80:80'
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    environment:
+      - MONGODB_URL=${MONGODB_URL}
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: client
+    environment:
+      - WDS_SOCKET_PORT=0
